@@ -1,3 +1,3 @@
-[submodule ".\\kritor\\kritor"]
-	path = .\\kritor\\kritor
-	url = git@github.com:akikohaku/kritor.git
+[submodule "./kritor/kritor"]
+	path = ./kritor/kritor
+	url = https://github.com/akikohaku/kritor
