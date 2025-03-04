@@ -81,10 +81,10 @@ internal class KritorClient(
         channelJob = GlobalScope.launch(Dispatchers.IO) {
             runCatching {
                 val stub = ReverseServiceGrpcKt.ReverseServiceCoroutineStub(channel)
-                registerEvent(EventType.EVENT_TYPE_MESSAGE)
-                registerEvent(EventType.EVENT_TYPE_CORE_EVENT)
-                registerEvent(EventType.EVENT_TYPE_REQUEST)
-                registerEvent(EventType.EVENT_TYPE_NOTICE)
+                registerEvent(EventType.MESSAGE)
+                registerEvent(EventType.CORE_EVENT)
+                registerEvent(EventType.REQUEST)
+                registerEvent(EventType.NOTICE)
                 stub.reverseStream(channelFlow {
                     senderChannel.collect { send(it) }
                 }).collect {
@@ -104,22 +104,22 @@ internal class KritorClient(
             runCatching {
                 EventServiceGrpcKt.EventServiceCoroutineStub(channel).registerPassiveListener(channelFlow {
                     when(eventType) {
-                        EventType.EVENT_TYPE_MESSAGE -> GlobalEventTransmitter.onMessageEvent {
+                        EventType.MESSAGE -> GlobalEventTransmitter.onMessageEvent {
                             send(EventStructure.newBuilder().apply {
-                                this.type = EventType.EVENT_TYPE_MESSAGE
+                                this.type = EventType.MESSAGE
                                 this.message = it.second
                             }.build())
                         }
-                        EventType.EVENT_TYPE_CORE_EVENT -> {}
-                        EventType.EVENT_TYPE_NOTICE -> GlobalEventTransmitter.onNoticeEvent {
+                        EventType.CORE_EVENT -> {}
+                        EventType.NOTICE -> GlobalEventTransmitter.onNoticeEvent {
                             send(EventStructure.newBuilder().apply {
-                                this.type = EventType.EVENT_TYPE_NOTICE
+                                this.type = EventType.NOTICE
                                 this.notice = it
                             }.build())
                         }
-                        EventType.EVENT_TYPE_REQUEST -> GlobalEventTransmitter.onRequestEvent {
+                        EventType.REQUEST -> GlobalEventTransmitter.onRequestEvent {
                             send(EventStructure.newBuilder().apply {
-                                this.type = EventType.EVENT_TYPE_REQUEST
+                                this.type = EventType.REQUEST
                                 this.request = it
                             }.build())
                         }
