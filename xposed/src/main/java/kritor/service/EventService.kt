@@ -25,14 +25,14 @@ internal object EventService : EventServiceGrpcKt.EventServiceCoroutineImplBase(
                 EventType.NOTICE -> GlobalEventTransmitter.onNoticeEvent {
                     send(EventStructure.newBuilder().apply {
                         this.type = EventType.NOTICE
-                        this.NOTICE = it
+                        this.notice = it
                     }.build())
                 }
 
                 EventType.REQUEST -> GlobalEventTransmitter.onRequestEvent {
                     send(EventStructure.newBuilder().apply {
                         this.type = EventType.REQUEST
-                        this.REQUEST = it
+                        this.request = it
                     }.build())
                 }
 
