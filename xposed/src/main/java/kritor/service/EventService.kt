@@ -14,25 +14,25 @@ internal object EventService : EventServiceGrpcKt.EventServiceCoroutineImplBase(
     override fun registerActiveListener(request: RequestPushEvent): Flow<EventStructure> {
         return channelFlow {
             when (request.type!!) {
-                EventType.EVENT_TYPE_CORE_EVENT -> {}
-                EventType.EVENT_TYPE_MESSAGE -> GlobalEventTransmitter.onMessageEvent {
+                EventType.CORE_EVENT -> {}
+                EventType.MESSAGE -> GlobalEventTransmitter.onMessageEvent {
                     send(EventStructure.newBuilder().apply {
-                        this.type = EventType.EVENT_TYPE_MESSAGE
+                        this.type = EventType.MESSAGE
                         this.message = it.second
                     }.build())
                 }
 
-                EventType.EVENT_TYPE_NOTICE -> GlobalEventTransmitter.onRequestEvent {
+                EventType.NOTICE -> GlobalEventTransmitter.onNOTICEEvent {
                     send(EventStructure.newBuilder().apply {
-                        this.type = EventType.EVENT_TYPE_NOTICE
-                        this.request = it
+                        this.type = EventType.NOTICE
+                        this.NOTICE = it
                     }.build())
                 }
 
-                EventType.EVENT_TYPE_REQUEST -> GlobalEventTransmitter.onNoticeEvent {
+                EventType.REQUEST -> GlobalEventTransmitter.onREQUESTEvent {
                     send(EventStructure.newBuilder().apply {
-                        this.type = EventType.EVENT_TYPE_NOTICE
-                        this.notice = it
+                        this.type = EventType.REQUEST
+                        this.REQUEST = it
                     }.build())
                 }
 
